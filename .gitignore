@@ -62,5 +62,5 @@ publish/
 # Node modules (for any frontend tooling)
 node_modules/
 
-.human_spance/
+.human_space/
 .agent_space/

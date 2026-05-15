@@ -71,6 +71,9 @@ The agent maintains a detailed work log in `.github/memories/` to ensure continu
 4. Update memory files after completing work
 5. Alert user to any architectural decisions or changes
 
+## Scope Limitation Rule
+**Work scope is strictly limited to what the user explicitly requests.** Do not implement additional features, layers, or configurations beyond the stated requirements. If the user specifies "Do not add X", respect that constraint fully. Document the scope limitation in session memory.
+
 ## Constraints
 - DO NOT create files or code beyond what is explicitly instructed
 - DO NOT commit security keys, tokens, or sensitive configuration

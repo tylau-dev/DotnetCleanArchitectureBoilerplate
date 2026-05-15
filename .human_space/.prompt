@@ -51,3 +51,10 @@ Update with the following points:
 * Update architectural_decisions.md
 
 =====
+
+# Context
+Read .github/AGENT.md (and memories if needed) to understand the current state of the project and carry on with the following task(s).
+
+# Tasks
+1. Create solution structure with .sln, core .csproj files for Domain, Application, Infrastructure, API, and Tests layers, following strict separation of concerns.
+2. Run the prompt 'create-readme'
