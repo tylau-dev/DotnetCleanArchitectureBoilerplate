@@ -56,13 +56,16 @@ The agent maintains a detailed work log in `.github/memories/` to ensure continu
 - **API**: Minimal API with standardized `Result<T>` response wrapper
 - **CQRS Framework**: MediatR
 - **ORM**: Entity Framework Core
-- **Event Sourcing**: Pending decision (placeholder - to be determined)
+- **Event Sourcing**: Marten with PostgreSQL + Docker Compose
 - **Validation**: FluentValidation
 - **Mapping**: AutoMapper
 - **Testing**: 
   - Unit Tests: xUnit + Moq
   - Integration Tests: xUnit with test fixtures
-- **Code Analysis**: StyleCop, FxCop
+- **Code Analysis**: 
+  - Roslyn Analyzers: Microsoft.CodeAnalysis.NetAnalyzers v10.0.300
+  - Async/Await: AsyncFixer v1.6.0 (non-test projects)
+- **Build Configuration**: Directory.Build.props with centralized .NET 10.0 properties
 
 ## Interaction Protocol
 1. Confirm user validation before executing major commands

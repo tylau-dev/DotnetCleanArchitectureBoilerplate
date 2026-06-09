@@ -3,8 +3,10 @@
 This file serves as an archive reference. Individual work sessions are documented in session-specific files:
 
 - `work_log_2026-05-15_feature-prompt-initiation.md` - Prompt initialization and Marten decision session
+- `work_log_2026-05-15_readme-creation.md` - README creation session
+- `work_log_2026-05-16_build-configuration.md` - Build configuration (Directory.Build.props & .editorconfig)
 
-For current work, refer to the most recent `work_log_[DATE]_[BRANCH].md` file.
+For current work, refer to the most recent `work_log_[DATE]_[TOPIC].md` file.
 
 ## Historical Summary
 

@@ -14,14 +14,14 @@ lastDtbSucceeded
 
 [properties]
 AssemblyName=API
-CommandLineArgsForDesignTimeEvaluation=-langversion:14.0 -define:TRACE
+CommandLineArgsForDesignTimeEvaluation=-langversion:14 -define:TRACE
 CompilerGeneratedFilesOutputPath=
 MaxSupportedLangVersion=14.0
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=API
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=*Undefined*
+SolutionPath=<PATH>../../DotnetCleanCodeBoilerplate.slnx
 TargetFrameworkIdentifier=.NETCoreApp
 TargetPath=<PATH>bin/Debug/net10.0/API.dll
 TargetRefPath=<PATH>obj/Debug/net10.0/ref/API.dll
@@ -50,7 +50,7 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror-
 /utf8output
 /deterministic+
-/langversion:14.0
+/langversion:14
 /features:use-roslyn-tokenizer=true
 /warnaserror+:NU1605,SYSLIB0011
 
@@ -401,8 +401,19 @@ Program.cs
 <DOTNET>/sdk/10.0.300/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<NUGET>/microsoft.aspnetcore.openapi/10.0.8/analyzers/dotnet/cs/Microsoft.AspNetCore.OpenApi.SourceGenerators.dll
+<DOTNET>/sdk/10.0.300/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+ Microsoft.CodeAnalysis.CodeStyle.dll
+ Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
+ Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
+ Microsoft.CodeAnalysis.CSharp.CodeStyle.Fixes.dll
+<NUGET>/
+ asyncfixer/1.6.0/analyzers/dotnet/cs/AsyncFixer.dll
+ microsoft.aspnetcore.openapi/10.0.8/analyzers/dotnet/cs/Microsoft.AspNetCore.OpenApi.SourceGenerators.dll
+ microsoft.codeanalysis.netanalyzers/10.0.300/analyzers/dotnet/
+  cs/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
+  Microsoft.CodeAnalysis.NetAnalyzers.dll
 
 [analyzerConfigFiles]
+../../.editorconfig
 <DOTNET>/sdk/10.0.300/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
 obj/Debug/net10.0/API.GeneratedMSBuildEditorConfig.editorconfig

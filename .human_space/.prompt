@@ -55,6 +55,21 @@ Update with the following points:
 # Context
 Read .github/AGENT.md (and memories if needed) to understand the current state of the project and carry on with the following task(s).
 
+Make a plan (aka a prompt) that will be run in Agent mode for the following Tasks
+
 # Tasks
-1. Create solution structure with .sln, core .csproj files for Domain, Application, Infrastructure, API, and Tests layers, following strict separation of concerns.
-2. Run the prompt 'create-readme'
+Steps
+- Create .editorconfig at the root with:
+  - Severity rules for Microsoft.CodeAnalysis.NetAnalyzers (CA* rules)
+  - Severity rules for AsyncFixer (async/await best practices)
+  - Indentation, naming conventions, and code style preferences
+  - Apply root=true to ensure this is the top-level config
+- Create Directory.Build.props at the root with:
+  - Common properties: <TargetFramework>net10.0</TargetFramework>, <LangVersion>14</LangVersion>, <Nullable>enable</Nullable>, <ImplicitUsings>enable</ImplicitUsings>
+<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild> and <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+Package reference for Microsoft.CodeAnalysis.NetAnalyzers (latest stable) for all projects
+Conditional package reference for AsyncFixer (latest stable) for non-test projects only
+Use dotnet add package to add both packages to their respective projects (6 projects for NetAnalyzers, 4 non-test projects for AsyncFixer), then consolidate versions in Directory.Build.props
+
+Verify build succeeds with dotnet build and confirm analyzers are active
+Feel free to ask me any required input.
