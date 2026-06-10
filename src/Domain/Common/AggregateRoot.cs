@@ -4,7 +4,7 @@ namespace Domain.Common;
 /// Base class for aggregate roots that track domain events raised during business operations.
 /// </summary>
 /// <typeparam name="TId">The type of the aggregate root's identifier.</typeparam>
-public abstract class AggregateRoot<TId> : Entity<TId>
+public abstract class AggregateRoot<TId> : Entity<TId>, IHasDomainEvents
     where TId : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = [];
@@ -26,14 +26,10 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     {
     }
 
-    /// <summary>
-    /// Gets the domain events raised by this aggregate root that have not yet been dispatched.
-    /// </summary>
+    /// <inheritdoc />
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    /// <summary>
-    /// Clears all domain events that have been raised by this aggregate root.
-    /// </summary>
+    /// <inheritdoc />
     public void ClearDomainEvents()
         => _domainEvents.Clear();
 

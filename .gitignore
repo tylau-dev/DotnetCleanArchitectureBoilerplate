@@ -45,6 +45,7 @@ _ReSharper*/
 local.settings.json
 appsettings.Development.json
 appsettings.Local.json
+.env
 
 # Test Results
 TestResults/

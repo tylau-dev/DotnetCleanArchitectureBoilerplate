@@ -44,6 +44,14 @@
 - **Repository Pattern**: Aggregate root persistence contracts in Domain, implementations in Infrastructure
 - **Specification Pattern**: Complex queries expressed as specifications
 
+### Dependency Injection Registration
+- Each layer that registers its own services for DI (Application, Infrastructure, ...) exposes
+  a single static extension method on `IServiceCollection` (e.g. `AddApplication`,
+  `AddInfrastructure`).
+- The method lives in `src/<Layer>/Extensions/ServiceExtension.cs`, in a static class named
+  `ServiceExtension`, namespace `<Layer>.Extensions`.
+- The composition root (`src/API/Program.cs`) calls each layer's extension method.
+
 ### CQRS Pattern
 - **Commands**: Modify state; return success/failure
 - **Queries**: Retrieve data; no side effects
@@ -115,6 +123,16 @@ public class Result<T>
 ### LoggingExtensions Pattern
 All logging uses custom `LoggingExtensions` for consistency and structured logging.
 
+### Call-Site Convention
+- Application/Infrastructure code (behaviors, handlers, services) must **not** call
+  `LogXWithId(...)` directly with inline messages and log IDs.
+- Each distinct log event gets its own named extension method in the layer's
+  `LoggingExtensions.cs` (e.g. `LogHandlingRequest`, `LogAppendedDomainEvent`), which itself
+  wraps the generic `LogXWithId` helper with the fixed log ID and message template.
+- This keeps log IDs and message templates centralized and discoverable in one file per layer,
+  and keeps call sites readable (`_logger.LogHandlingRequest(name)` instead of
+  `_logger.LogInformationWithId(2201, "Handling {RequestName}", name)`).
+
 ### Log ID Format
 Log IDs follow a two-plus-digit format: `[LogLevel][DomainLayer][Incremental]`
 
@@ -164,8 +182,16 @@ _logger.LogError("3401", "Repository query failed: {Exception}", ex);
 - **Configuration**: Use `appsettings.json` + `appsettings.{Environment}.json`
 - **Development Secrets**: Store in `appsettings.Development.json` (local, never committed)
 - **Production Secrets**: Use environment variables or secure secret management
-- **.gitignore**: Include `appsettings.Development.json` to prevent secret leaks
-- **No Hardcoding**: Zero tolerance for hardcoded secrets, API keys, or connection strings
+- **.gitignore**: Include `appsettings.Development.json` and `.env` to prevent secret leaks
+- **No Hardcoding**: Zero tolerance for hardcoded secrets, API keys, or connection strings —
+  including local-development defaults and values used only in tests
+- **Docker Compose Secrets**: `docker-compose.yml` must not contain hardcoded credentials.
+  Local credentials are supplied via a gitignored `.env` file (copied from a committed
+  `.env.example` template); docker-compose substitutes `${VAR}` references from `.env`
+  automatically
+- **Test Connection Strings**: Even non-functional placeholder connection strings used only to
+  satisfy DI-registration checks in tests belong in an `appsettings.json` file, not hardcoded
+  inline in test source
 
 ## Memory File Management
 

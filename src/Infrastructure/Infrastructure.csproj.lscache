@@ -13,19 +13,7 @@ primary
 lastDtbSucceeded
 
 [properties]
-AssemblyName=Infrastructure
 CommandLineArgsForDesignTimeEvaluation=-langversion:14 -define:TRACE
-CompilerGeneratedFilesOutputPath=
-MaxSupportedLangVersion=14.0
-ProjectAssetsFile=<PATH>obj/project.assets.json
-RootNamespace=Infrastructure
-RunAnalyzers=
-RunAnalyzersDuringLiveAnalysis=
-SolutionPath=<PATH>../../DotnetCleanCodeBoilerplate.slnx
-TargetFrameworkIdentifier=.NETCoreApp
-TargetPath=<PATH>bin/Debug/net10.0/Infrastructure.dll
-TargetRefPath=<PATH>obj/Debug/net10.0/ref/Infrastructure.dll
-TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [commandLineArguments]
 /noconfig
@@ -54,13 +42,31 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Class1.cs
+Common/Logging/LoggingExtensions.cs
+EventStore/
+ IEventStore.cs
+ MartenEventStore.cs
+ NullEventStore.cs
+Extensions/ServiceExtension.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  Infrastructure.AssemblyInfo.cs
  Infrastructure.GlobalUsings.g.cs
+Persistence/
+ ApplicationDbContext.cs
+ ApplicationDbContextFactory.cs
+ Configurations/
+  OrderConfiguration.cs
+  OrderItemConfiguration.cs
+ Migrations/
+  20260610181722_InitialCreate.cs
+  20260610181722_InitialCreate.Designer.cs
+  ApplicationDbContextModelSnapshot.cs
+ NullPublisher.cs
+ Repositories/OrderRepository.cs
 
 [metadataReferences]
+../Domain/obj/Debug/net10.0/ref/Domain.dll
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
@@ -229,6 +235,66 @@ obj/Debug/net10.0/
  System.Xml.XPath.dll
  System.Xml.XPath.XDocument.dll
  WindowsBase.dll
+<NUGET>/
+ distributedlock.core/1.0.8/lib/net8.0/DistributedLock.Core.dll
+ distributedlock.postgres/1.3.0/lib/net8.0/DistributedLock.Postgres.dll
+ fastexpressioncompiler/5.4.1/lib/net9.0/FastExpressionCompiler.dll
+ jasperfx.events/2.9.2/lib/net10.0/JasperFx.Events.dll
+ jasperfx/2.9.2/lib/net10.0/JasperFx.dll
+ marten/9.7.1/lib/net10.0/Marten.dll
+ mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
+ mediatr/14.1.0/lib/net10.0/MediatR.dll
+ microsoft.bcl.timeprovider/10.0.0/lib/net8.0/Microsoft.Bcl.TimeProvider.dll
+ microsoft.entityframeworkcore.abstractions/10.0.9/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.relational/10.0.9/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
+ microsoft.entityframeworkcore/10.0.9/lib/net10.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.extensions.caching.abstractions/10.0.9/lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll
+ microsoft.extensions.caching.memory/10.0.9/lib/net10.0/Microsoft.Extensions.Caching.Memory.dll
+ microsoft.extensions.configuration.abstractions/10.0.9/lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll
+ microsoft.extensions.configuration.binder/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.Binder.dll
+ microsoft.extensions.configuration.commandline/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.CommandLine.dll
+ microsoft.extensions.configuration.environmentvariables/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+ microsoft.extensions.configuration.fileextensions/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.FileExtensions.dll
+ microsoft.extensions.configuration.json/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.Json.dll
+ microsoft.extensions.configuration.usersecrets/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.UserSecrets.dll
+ microsoft.extensions.configuration/10.0.0/lib/net10.0/Microsoft.Extensions.Configuration.dll
+ microsoft.extensions.dependencyinjection.abstractions/10.0.9/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+ microsoft.extensions.dependencyinjection/10.0.9/lib/net10.0/Microsoft.Extensions.DependencyInjection.dll
+ microsoft.extensions.diagnostics.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+ microsoft.extensions.diagnostics.healthchecks.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+ microsoft.extensions.diagnostics/10.0.0/lib/net10.0/Microsoft.Extensions.Diagnostics.dll
+ microsoft.extensions.fileproviders.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+ microsoft.extensions.fileproviders.physical/10.0.0/lib/net10.0/Microsoft.Extensions.FileProviders.Physical.dll
+ microsoft.extensions.filesystemglobbing/10.0.0/lib/net10.0/Microsoft.Extensions.FileSystemGlobbing.dll
+ microsoft.extensions.hosting.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll
+ microsoft.extensions.hosting/10.0.0/lib/net10.0/Microsoft.Extensions.Hosting.dll
+ microsoft.extensions.logging.abstractions/10.0.9/lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll
+ microsoft.extensions.logging.configuration/10.0.0/lib/net10.0/Microsoft.Extensions.Logging.Configuration.dll
+ microsoft.extensions.logging.console/10.0.0/lib/net10.0/Microsoft.Extensions.Logging.Console.dll
+ microsoft.extensions.logging.debug/10.0.0/lib/net10.0/Microsoft.Extensions.Logging.Debug.dll
+ microsoft.extensions.logging.eventlog/10.0.0/lib/net10.0/Microsoft.Extensions.Logging.EventLog.dll
+ microsoft.extensions.logging.eventsource/10.0.0/lib/net10.0/Microsoft.Extensions.Logging.EventSource.dll
+ microsoft.extensions.logging/10.0.9/lib/net10.0/Microsoft.Extensions.Logging.dll
+ microsoft.extensions.objectpool/10.0.0/lib/net10.0/Microsoft.Extensions.ObjectPool.dll
+ microsoft.extensions.options.configurationextensions/10.0.0/lib/net10.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+ microsoft.extensions.options/10.0.9/lib/net10.0/Microsoft.Extensions.Options.dll
+ microsoft.extensions.primitives/10.0.9/lib/net10.0/Microsoft.Extensions.Primitives.dll
+ microsoft.identitymodel.abstractions/8.14.0/lib/net9.0/Microsoft.IdentityModel.Abstractions.dll
+ microsoft.identitymodel.jsonwebtokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+ microsoft.identitymodel.logging/8.14.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
+ microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
+ microsoft.io.recyclablememorystream/3.0.1/lib/net6.0/Microsoft.IO.RecyclableMemoryStream.dll
+ nettopologysuite.io.postgis/2.1.0/lib/netstandard2.1/NetTopologySuite.IO.PostGis.dll
+ nettopologysuite/2.5.0/lib/netstandard2.0/NetTopologySuite.dll
+ npgsql.entityframeworkcore.postgresql/10.0.2/lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+ npgsql.nettopologysuite/9.0.4/lib/net6.0/Npgsql.NetTopologySuite.dll
+ npgsql/10.0.3/lib/net10.0/Npgsql.dll
+ polly.core/8.6.5/lib/net8.0/Polly.Core.dll
+ spectre.console.ansi/0.55.0/lib/net10.0/Spectre.Console.Ansi.dll
+ spectre.console/0.55.0/lib/net10.0/Spectre.Console.dll
+ system.diagnostics.eventlog/10.0.0/lib/net10.0/System.Diagnostics.EventLog.dll
+ weasel.core/9.1.2/lib/net10.0/Weasel.Core.dll
+ weasel.postgresql/9.1.2/lib/net10.0/Weasel.Postgresql.dll
 
 [analyzerReferences]
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/analyzers/dotnet/cs/
@@ -248,9 +314,16 @@ obj/Debug/net10.0/
  Microsoft.CodeAnalysis.CSharp.CodeStyle.Fixes.dll
 <NUGET>/
  asyncfixer/1.6.0/analyzers/dotnet/cs/AsyncFixer.dll
+ marten/9.7.1/analyzers/dotnet/cs/JasperFx.Events.SourceGenerator.dll
+ microsoft.codeanalysis.analyzers/3.11.0/analyzers/dotnet/cs/
+  Microsoft.CodeAnalysis.Analyzers.dll
+  Microsoft.CodeAnalysis.CSharp.Analyzers.dll
  microsoft.codeanalysis.netanalyzers/10.0.300/analyzers/dotnet/
   cs/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
   Microsoft.CodeAnalysis.NetAnalyzers.dll
+ microsoft.entityframeworkcore.analyzers/10.0.9/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+ microsoft.extensions.logging.abstractions/10.0.9/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Logging.Generators.dll
+ microsoft.extensions.options/10.0.9/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Options.SourceGeneration.dll
 
 [analyzerConfigFiles]
 ../../.editorconfig

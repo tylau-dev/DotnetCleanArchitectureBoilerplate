@@ -47,6 +47,7 @@ Common/
  DomainException.cs
  Entity.cs
  IDomainEvent.cs
+ IHasDomainEvents.cs
  InvalidOrderStateException.cs
  IUnitOfWork.cs
  ValueObject.cs
