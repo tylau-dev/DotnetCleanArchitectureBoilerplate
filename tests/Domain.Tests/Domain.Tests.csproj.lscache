@@ -13,19 +13,7 @@ primary
 lastDtbSucceeded
 
 [properties]
-AssemblyName=Domain.Tests
 CommandLineArgsForDesignTimeEvaluation=-langversion:14 -define:TRACE
-CompilerGeneratedFilesOutputPath=
-MaxSupportedLangVersion=14.0
-ProjectAssetsFile=<PATH>obj/project.assets.json
-RootNamespace=Domain.Tests
-RunAnalyzers=
-RunAnalyzersDuringLiveAnalysis=
-SolutionPath=<PATH>../../DotnetCleanCodeBoilerplate.slnx
-TargetFrameworkIdentifier=.NETCoreApp
-TargetPath=<PATH>bin/Debug/net10.0/Domain.Tests.dll
-TargetRefPath=<PATH>obj/Debug/net10.0/ref/Domain.Tests.dll
-TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [commandLineArguments]
 /noconfig
@@ -56,13 +44,19 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 [sourceFiles]
 <NUGET>/microsoft.net.test.sdk/17.14.1/build/net8.0/Microsoft.NET.Test.Sdk.Program.cs
  @folderNames=..,..,..,..,..,.nuget,packages,microsoft.net.test.sdk,17.14.1,build,net8.0
+Common/ValueObjectTests.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  Domain.Tests.AssemblyInfo.cs
  Domain.Tests.GlobalUsings.g.cs
-UnitTest1.cs
+Orders/
+ OrderTests.cs
+ ValueObjects/
+  AddressTests.cs
+  MoneyTests.cs
 
 [metadataReferences]
+../../src/Domain/obj/Debug/net10.0/ref/Domain.dll
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll

@@ -1,6 +1,57 @@
 ````markdown
 # Current Project State
 
+## Session 5 (June 10, 2026) - Domain Layer: Order Management
+
+### Completed This Session
+- ✅ Designed and implemented `src/Domain` for the "Order Management" example bounded context
+  (see `.github/memories/work_log_2026-06-10_feature-design_domain_layer.md` for full detail)
+- ✅ `src/Domain/Common/` SeedWork: `Entity<TId>`, `AggregateRoot<TId>`, `ValueObject`,
+  `IDomainEvent`, `IUnitOfWork`, `DomainException`, `InvalidOrderStateException`
+- ✅ `src/Domain/Orders/`: `Order` aggregate root, `OrderItem` entity, `OrderStatus` enum,
+  `IOrderRepository`
+- ✅ `src/Domain/Orders/ValueObjects/`: `OrderId`, `OrderItemId`, `CustomerId`, `ProductId`,
+  `Money`, `Address`
+- ✅ `src/Domain/Orders/Events/`: `OrderItemAddedDomainEvent`, `OrderPlacedDomainEvent`,
+  `OrderShippedDomainEvent`, `OrderCancelledDomainEvent`
+- ✅ `tests/Domain.Tests/` — 23 unit tests, all passing; added missing `ProjectReference` to
+  `Domain.csproj`
+- ✅ `Domain.csproj` confirmed dependency-free beyond `Directory.Build.props`-injected packages
+- ✅ Updated `.github/project.md` (Example Domain = Order Management) and added ADR-007
+
+### Project Structure (Current)
+```
+src/
+├── API/        (Program.cs scaffold + appsettings)
+├── Application/ (Class1.cs placeholder — pending)
+├── Domain/      (✅ Order Management domain implemented this session)
+│   ├── Common/
+│   ├── Orders/
+│   │   ├── Events/
+│   │   └── ValueObjects/
+└── Infrastructure/ (Class1.cs placeholder — pending)
+tests/
+├── Application.Tests/ (UnitTest1.cs placeholder — pending)
+└── Domain.Tests/ (✅ Order Management tests implemented this session)
+    ├── Common/
+    └── Orders/ValueObjects/
+```
+
+### Missing Components (To Do)
+- ⏳ `src/Application/` — CQRS commands/queries/handlers over the `Order` aggregate
+- ⏳ `src/Infrastructure/` — EF Core `DbContext`, entity configurations, `IOrderRepository` /
+  `IUnitOfWork` implementations, MediatR domain-event dispatch
+- ⏳ `src/API/` — Minimal API endpoints for Order Management use cases
+- ⏳ `tests/Application.Tests/` — handler/integration tests
+- ⏳ ARCHITECTURE.md, CONTRIBUTING.md
+
+### Ready to Proceed
+Yes - Domain layer for Order Management is complete and verified (`dotnet build` and
+`dotnet test` both pass, no new package/project references beyond `tests/Domain.Tests` ->
+`src/Domain`). Awaiting next request: Application layer (CQRS) for Order Management.
+
+---
+
 ## Session 3 (May 15, 2026) - README Creation
 
 ### Completed This Session

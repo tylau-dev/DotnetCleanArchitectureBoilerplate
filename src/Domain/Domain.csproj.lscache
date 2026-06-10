@@ -13,19 +13,7 @@ primary
 lastDtbSucceeded
 
 [properties]
-AssemblyName=Domain
 CommandLineArgsForDesignTimeEvaluation=-langversion:14 -define:TRACE
-CompilerGeneratedFilesOutputPath=
-MaxSupportedLangVersion=14.0
-ProjectAssetsFile=<PATH>obj/project.assets.json
-RootNamespace=Domain
-RunAnalyzers=
-RunAnalyzersDuringLiveAnalysis=
-SolutionPath=<PATH>../../DotnetCleanCodeBoilerplate.slnx
-TargetFrameworkIdentifier=.NETCoreApp
-TargetPath=<PATH>bin/Debug/net10.0/Domain.dll
-TargetRefPath=<PATH>obj/Debug/net10.0/ref/Domain.dll
-TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [commandLineArguments]
 /noconfig
@@ -54,11 +42,35 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Class1.cs
+Common/
+ AggregateRoot.cs
+ DomainException.cs
+ Entity.cs
+ IDomainEvent.cs
+ InvalidOrderStateException.cs
+ IUnitOfWork.cs
+ ValueObject.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  Domain.AssemblyInfo.cs
  Domain.GlobalUsings.g.cs
+Orders/Events/
+ OrderCancelledDomainEvent.cs
+ OrderItemAddedDomainEvent.cs
+ OrderPlacedDomainEvent.cs
+ OrderShippedDomainEvent.cs
+Orders/
+ IOrderRepository.cs
+ Order.cs
+ OrderItem.cs
+ OrderStatus.cs
+ ValueObjects/
+  Address.cs
+  CustomerId.cs
+  Money.cs
+  OrderId.cs
+  OrderItemId.cs
+  ProductId.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/ref/net10.0/

@@ -18,7 +18,9 @@ This boilerplate is not a domain-specific business application. Instead, it prov
 
 As this is a **purely technical boilerplate project**, functional/business requirements are minimal. Instead, the project demonstrates:
 
-1. **Example Domain**: A simple domain model (to be determined) used solely to demonstrate DDD and CQRS patterns
+1. **Example Domain**: **Order Management** — a simple `Order` aggregate (with `OrderItem` line items, `OrderStatus`
+   lifecycle, `Money`/`Address` value objects, and `CustomerId`/`ProductId` references to other bounded contexts)
+   used solely to demonstrate DDD and CQRS patterns
 2. **Reference Architecture**: Serves as a template for future business-domain projects
 3. **Pattern Library**: Provides reusable patterns and implementations
 
