@@ -1,6 +1,47 @@
 ````markdown
 # Current Project State
 
+## Session 7 (June 11, 2026) - Application Layer: Order CQRS Use Cases
+
+### Completed This Session
+- ✅ `src/Application/Common/Exceptions/NotFoundException.cs` (new) — thrown by command
+  handlers when an `Order` is not found.
+- ✅ `src/Application/Orders/Dtos/`: `AddressDto`, `OrderItemDto`, `OrderDto` (init-property
+  records, independent of Domain types), `OrderStatusDto` (enum mirroring
+  `Domain.Orders.OrderStatus`).
+- ✅ `src/Application/Orders/Mappings/OrderMappingProfile.cs` — `AutoMapper.Profile` mapping
+  `Order -> OrderDto`, `OrderItem -> OrderItemDto`, `Address -> AddressDto`,
+  `OrderStatus -> OrderStatusDto`, strongly-typed IDs -> `Guid`.
+- ✅ `src/Application/Orders/Commands/`: `CreateOrderCommand.cs`, `AddOrderItemCommand.cs`,
+  `PlaceOrderCommand.cs`, `ShipOrderCommand.cs`, `CancelOrderCommand.cs` — each a single file
+  containing `<UseCase>Command`, `<UseCase>Validator`, `<UseCase>Handler` (new convention, see
+  ADR-014 and `user_preference.md`).
+- ✅ `src/Application/Orders/Queries/GetOrderByIdQuery.cs` — `GetOrderByIdQuery`,
+  `GetOrderByIdValidator`, `GetOrderByIdHandler` (returns `OrderDto?`, `null` on not-found).
+- ✅ `tests/Application.Tests/Orders/` — handler/validator tests for all 5 commands + the
+  query, plus `OrderMappingProfileTests` (28 new tests).
+- ✅ Added ADR-014 to `architectural_decisions.md`; added the
+  `NotFoundException` → `Result<T>` 404 pending-decision entry to `pending_decisions.md`;
+  documented the "CQRS Use-Case Files" convention in `user_preference.md`.
+- ✅ `dotnet build` — 0 errors, 4 pre-existing CA5394 warnings unchanged. `dotnet test` —
+  Domain.Tests 23/23, Application.Tests 38/38, Infrastructure.Tests 11/11.
+
+### Missing Components (To Do)
+- ⏳ `src/API/` — Minimal API endpoints mapping to the new Order commands/queries via
+  `Result<T>`
+- ⏳ API-layer exception handling: `ValidationException` → `Result<T>` 400 and
+  `NotFoundException` → `Result<T>` 404 (see `pending_decisions.md`)
+- ⏳ `docker-compose up -d` + `dotnet ef database update` (manual, not run yet) to create the
+  actual `public`/`event_store` schemas
+- ⏳ ARCHITECTURE.md, CONTRIBUTING.md
+
+### Ready to Proceed
+Yes - Order CQRS use cases (commands, query, DTOs, mapping profile, validators, tests) are
+complete and verified. Awaiting next request: `src/API/` Minimal API endpoints for Order
+Management + exception-handling middleware for `ValidationException`/`NotFoundException`.
+
+---
+
 ## Session 6 (June 10, 2026) - Application & Infrastructure Layers: CQRS Pipeline + EF Core/PostgreSQL + Marten Event Store
 
 ### Completed This Session

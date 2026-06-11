@@ -59,6 +59,20 @@
 - **Pipeline Behaviors**: Validation, logging, error handling as separate behaviors
 - **DTOs**: Use for data transfer; never expose domain entities to API consumers
 
+### CQRS Use-Case Files (exception to "one public class per file")
+Each CQRS use case (command or query) is implemented in a single file named
+`<UseCase><Command|Query>.cs` under `src/Application/<BoundedContext>/Commands|Queries/`,
+containing exactly three public types:
+- `<UseCase>Command` / `<UseCase>Query` — the MediatR request record (`ICommand`,
+  `ICommand<TResponse>`, or `IQuery<TResponse>`)
+- `<UseCase>Validator` — `AbstractValidator<...>` for the request
+- `<UseCase>Handler` — `IRequestHandler<...>` for the request
+
+Example: `CreateOrderCommand.cs` contains `CreateOrderCommand`, `CreateOrderValidator`, and
+`CreateOrderHandler`. This keeps each use case self-contained and easy to navigate as a single
+unit. DTOs and mapping profiles are **not** part of this exception and remain one public type
+per file.
+
 ### API Response Pattern
 All API responses use standardized `Result<T>` wrapper:
 ```csharp

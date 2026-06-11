@@ -44,6 +44,21 @@ expected to be addressed when `src/API` endpoints and CQRS handlers are added.
 
 ---
 
+## Open: API-Layer Mapping of `Application.Common.Exceptions.NotFoundException` to `Result<T>` 404
+
+**Raised**: June 11, 2026 (during Order CQRS use-case session, see ADR-014)
+
+`AddOrderItemCommand`, `PlaceOrderCommand`, `ShipOrderCommand`, and `CancelOrderCommand`
+handlers throw `Application.Common.Exceptions.NotFoundException` when
+`IOrderRepository.GetByIdAsync` returns `null`. Per ADR-002, API responses should use the
+`Result<T>` wrapper with appropriate `StatusCode` (404 for not-found). No API-layer
+exception-handling middleware currently catches `NotFoundException` and maps it to a
+`Result<T>` 404 response — like the `ValidationException` → 400 mapping above, this is
+expected to be addressed together when `src/API` endpoints are added (likely the same
+`IExceptionHandler`/middleware handles both).
+
+---
+
 ## History: Resolved Decisions
 
 ### `.editorconfig` Private-Field Naming Rule vs. `_camelCase` Convention (RESOLVED - June 11, 2026)

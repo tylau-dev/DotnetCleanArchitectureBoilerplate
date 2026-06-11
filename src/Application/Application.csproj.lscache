@@ -47,6 +47,7 @@ Common/Behaviors/
  UnitOfWorkBehavior.cs
  ValidationBehavior.cs
 Common/
+ Exceptions/NotFoundException.cs
  Logging/LoggingExtensions.cs
  Messaging/
   ICommand.cs
@@ -57,6 +58,20 @@ obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  Application.AssemblyInfo.cs
  Application.GlobalUsings.g.cs
+Orders/Commands/
+ AddOrderItemCommand.cs
+ CancelOrderCommand.cs
+ CreateOrderCommand.cs
+ PlaceOrderCommand.cs
+ ShipOrderCommand.cs
+Orders/Dtos/
+ AddressDto.cs
+ OrderDto.cs
+ OrderItemDto.cs
+ OrderStatusDto.cs
+Orders/
+ Mappings/OrderMappingProfile.cs
+ Queries/GetOrderByIdQuery.cs
 
 [metadataReferences]
 ../Domain/obj/Debug/net10.0/ref/Domain.dll

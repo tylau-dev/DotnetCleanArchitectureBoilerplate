@@ -52,6 +52,22 @@ obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  Application.Tests.AssemblyInfo.cs
  Application.Tests.GlobalUsings.g.cs
+Orders/Commands/
+ AddOrderItemHandlerTests.cs
+ AddOrderItemValidatorTests.cs
+ CancelOrderHandlerTests.cs
+ CancelOrderValidatorTests.cs
+ CreateOrderHandlerTests.cs
+ CreateOrderValidatorTests.cs
+ PlaceOrderHandlerTests.cs
+ PlaceOrderValidatorTests.cs
+ ShipOrderHandlerTests.cs
+ ShipOrderValidatorTests.cs
+Orders/
+ Mappings/OrderMappingProfileTests.cs
+ Queries/
+  GetOrderByIdHandlerTests.cs
+  GetOrderByIdValidatorTests.cs
 
 [metadataReferences]
 ../../src/
