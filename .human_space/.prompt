@@ -1,75 +1,7 @@
-I want to build the following project.
-
-Your identity is an expert coding assistant, tasked with developing software projects. Professional quality is expected from you, and you should always strive to write clean, maintainable, and efficient code.
-
-For this branch, I want to only initialize common prompts in the ‘.github’ folder with that will be reused in future branches.
-DO NOT CREATE ANYTHING OTHER BEYOND WHAT IS SPECIFICALLY INSTRUCTUTED TO YOU.
-Check the branch name if you’re not sure of the scope or ask me directly. 
-
-I want :
-- agent.md : this file define the identity and the role of the agent, the workspace that the agent can use (should be contained in the ‘.github’ folder), define the use of ‘.github/memories’ in which the Agent should write a log of every work that was done
-- project.md : a file that contains project specific information (mostly functional/business information), since this is a purely Tech project, you can just write a placeholder file explaining how this file will be used
-- user_preference.md : contains all the development practices
-
-These files should be added to the context before doing any work and updated after doing any work.
-
-Steps
-1. Create solution structure with .sln, core .csproj files for Domain, Application, Infrastructure, API, and Tests layers, following strict separation of concerns.
-2. Configure shared build properties via Directory.Build.props with consistent .NET version, package versions, and code analysis rules.
-3. Design domain layer with DDD aggregates, entities, value objects, domain events, and repositories interfaces—no external dependencies.
-4. Implement application layer with CQRS handlers (Commands/Queries), DTOs, MediatR pipeline behaviors, and minimal XML comments on public contracts only.
-5. Build infrastructure layer with Event Store, repository implementations, database context, and dependency injection wiring.
-6. Create Minimal API that maps HTTP requests to Commands/Queries, demonstrating proper endpoint organization and response handling.
-7. Add comprehensive AI prompts to .github/prompts/ for code reviews, feature implementation, refactoring, and onboarding workflows.
-8. Include test projects with sample unit tests, integration tests demonstrating CQRS testing patterns and domain event verification.
-
-Further Considerations
-1. Package Selection – Recommend: MediatR (CQRS), Entity Framework Core (persistence), EventStore.Client or Marten (event sourcing), FluentValidation (command validation), AutoMapper (DTOs). Confirm if you prefer SQL-based or specialized event store?
-2. Event Sourcing Strategy – Use dedicated EventStore package for full event sourcing, or Marten (PostgreSQL-based) for simplified approach? Each affects infrastructure complexity.
-3. API Response Patterns – Standardized response wrapper (Result<T>) with proper error handling and consistent HTTP status codes—implement globally or per-endpoint?
-4. Testing Strategy – Focus on unit tests (domain logic), integration tests (application handlers), or both equally? Should we include example test fixtures?
-5. Documentation Scope – Generate README.md, ARCHITECTURE.md, and contribution guidelines alongside the code, or defer documentation to separate phase?
-
-Additional instructions:
-- Wait for my validation when executing a command
-- Use Dotnet commands and check the existing version
-- For the Directory.Build.props
-    - Use PackageReference Include
-    - Separate the Testing packages from the actual application packages
-    - Only put the actual shared package, if a package is only used by one Project, update the csproj in a separate step
-    - Check whether the package version is using the latest one and doesn't include vulnerabilities
-- Always test the application and make sure it actually run
-- NO SECURITY KEY OR ANY KIND OF TOKEN SHOULD BE COMMITED, proposer use of app settings.Development.json should be done (this file should be in .gitignore)  
-- Update the markdown in the ‘.github’ folder after each work
-
-
-====
-Update with the following points:
-* For event sourcing: Use Marten with Dockerfile + docker compose for local development (use postgres official image)
-* Update user_preference for logs : Logging strategy should be using LoggingExtensions. For the log ID, have a logic where the first digit is the LogLevel and the second digit is the Domain Layer of the project (i.e. 1 is for API, 2 is for Application etc...). The other numbers should be incremental.
-* For memories, a new work_log file should be created everytime any work is done with the current date and the branch name. If there is an existing file, update it.
-* Update architectural_decisions.md
-
-=====
-
 # Context
 Read .github/AGENT.md (and memories if needed) to understand the current state of the project and carry on with the following task(s).
 
 Make a plan (aka a prompt) that will be run in Agent mode for the following Tasks
 
 # Tasks
-Steps
-- Create .editorconfig at the root with:
-  - Severity rules for Microsoft.CodeAnalysis.NetAnalyzers (CA* rules)
-  - Severity rules for AsyncFixer (async/await best practices)
-  - Indentation, naming conventions, and code style preferences
-  - Apply root=true to ensure this is the top-level config
-- Create Directory.Build.props at the root with:
-  - Common properties: <TargetFramework>net10.0</TargetFramework>, <LangVersion>14</LangVersion>, <Nullable>enable</Nullable>, <ImplicitUsings>enable</ImplicitUsings>
-<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild> and <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-Package reference for Microsoft.CodeAnalysis.NetAnalyzers (latest stable) for all projects
-Conditional package reference for AsyncFixer (latest stable) for non-test projects only
-Use dotnet add package to add both packages to their respective projects (6 projects for NetAnalyzers, 4 non-test projects for AsyncFixer), then consolidate versions in Directory.Build.props
-
-Verify build succeeds with dotnet build and confirm analyzers are active
-Feel free to ask me any required input.
+Implement application layer with CQRS handlers (Commands/Queries), DTOs, MediatR pipeline behaviors, and minimal XML comments on public contracts only.
