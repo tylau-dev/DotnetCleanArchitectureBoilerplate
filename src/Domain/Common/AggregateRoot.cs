@@ -7,7 +7,7 @@ namespace Domain.Common;
 public abstract class AggregateRoot<TId> : Entity<TId>, IHasDomainEvents
     where TId : notnull
 {
-    private readonly List<IDomainEvent> _domainEvents = [];
+    private readonly List<IDomainEvent> domainEvents = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class.
@@ -27,16 +27,16 @@ public abstract class AggregateRoot<TId> : Entity<TId>, IHasDomainEvents
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+    public IReadOnlyList<IDomainEvent> DomainEvents => domainEvents.AsReadOnly();
 
     /// <inheritdoc />
     public void ClearDomainEvents()
-        => _domainEvents.Clear();
+        => domainEvents.Clear();
 
     /// <summary>
     /// Records a domain event to be dispatched once the aggregate root's changes are persisted.
     /// </summary>
     /// <param name="domainEvent">The domain event to raise.</param>
     protected void RaiseDomainEvent(IDomainEvent domainEvent)
-        => _domainEvents.Add(domainEvent);
+        => domainEvents.Add(domainEvent);
 }

@@ -24,8 +24,8 @@ namespace Infrastructure.EventStore;
 /// </remarks>
 public sealed class MartenEventStore : IEventStore
 {
-    private readonly IDocumentSession _session;
-    private readonly ILogger<MartenEventStore> _logger;
+    private readonly IDocumentSession session;
+    private readonly ILogger<MartenEventStore> logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MartenEventStore"/> class.
@@ -34,8 +34,8 @@ public sealed class MartenEventStore : IEventStore
     /// <param name="logger">The logger used to record appended events.</param>
     public MartenEventStore(IDocumentSession session, ILogger<MartenEventStore> logger)
     {
-        _session = session;
-        _logger = logger;
+        this.session = session;
+        this.logger = logger;
     }
 
     /// <inheritdoc />
@@ -43,11 +43,11 @@ public sealed class MartenEventStore : IEventStore
     {
         var streamId = ResolveStreamId(domainEvent);
 
-        _session.Events.Append(streamId, domainEvent);
+        session.Events.Append(streamId, domainEvent);
 
-        await _session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        _logger.LogAppendedDomainEvent(domainEvent.GetType().Name, streamId);
+        logger.LogAppendedDomainEvent(domainEvent.GetType().Name, streamId);
     }
 
     /// <summary>

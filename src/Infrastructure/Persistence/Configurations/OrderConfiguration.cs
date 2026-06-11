@@ -57,7 +57,7 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata.FindNavigation(nameof(Order.Items))!
-            .SetField("_items");
+            .SetField("items");
         builder.Metadata.FindNavigation(nameof(Order.Items))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
 

@@ -13,7 +13,7 @@ namespace Application.Common.Behaviors;
 public sealed class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork unitOfWork;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UnitOfWorkBehavior{TRequest, TResponse}"/> class.
@@ -21,7 +21,7 @@ public sealed class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<
     /// <param name="unitOfWork">The unit of work used to persist pending changes.</param>
     public UnitOfWorkBehavior(IUnitOfWork unitOfWork)
     {
-        _unitOfWork = unitOfWork;
+        this.unitOfWork = unitOfWork;
     }
 
     /// <inheritdoc />
@@ -34,7 +34,7 @@ public sealed class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<
 
         if (request is ICommand or ICommand<TResponse>)
         {
-            await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         return response;

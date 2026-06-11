@@ -15,7 +15,7 @@ public sealed class Order : AggregateRoot<OrderId>
     /// </summary>
     private const string DefaultCurrency = "USD";
 
-    private readonly List<OrderItem> _items = [];
+    private readonly List<OrderItem> items = [];
 
     private Order(OrderId id, CustomerId customerId, Address shippingAddress)
         : base(id)
@@ -49,7 +49,7 @@ public sealed class Order : AggregateRoot<OrderId>
     /// <summary>
     /// Gets the line items that make up this order.
     /// </summary>
-    public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
+    public IReadOnlyCollection<OrderItem> Items => items.AsReadOnly();
 
     /// <summary>
     /// Gets the UTC timestamp at which the order was created.
@@ -60,9 +60,9 @@ public sealed class Order : AggregateRoot<OrderId>
     /// Gets the total amount of the order, calculated as the sum of all line item subtotals.
     /// </summary>
     public Money TotalAmount =>
-        _items.Count == 0
+        items.Count == 0
             ? Money.Zero(DefaultCurrency)
-            : _items.Select(item => item.Subtotal).Aggregate((total, subtotal) => total.Add(subtotal));
+            : items.Select(item => item.Subtotal).Aggregate((total, subtotal) => total.Add(subtotal));
 
     /// <summary>
     /// Creates a new order in <see cref="OrderStatus.Draft"/> status with no line items.
@@ -93,7 +93,7 @@ public sealed class Order : AggregateRoot<OrderId>
         ArgumentOutOfRangeException.ThrowIfNegative(unitPrice.Amount);
 
         var item = new OrderItem(OrderItemId.New(), productId, productName, unitPrice, quantity);
-        _items.Add(item);
+        items.Add(item);
 
         RaiseDomainEvent(new OrderItemAddedDomainEvent(Id, productId, quantity, DateTimeOffset.UtcNow));
     }
@@ -109,7 +109,7 @@ public sealed class Order : AggregateRoot<OrderId>
             throw new InvalidOrderStateException($"Cannot place an order in '{Status}' status.");
         }
 
-        if (_items.Count == 0)
+        if (items.Count == 0)
         {
             throw new InvalidOrderStateException("Cannot place an order with no items.");
         }

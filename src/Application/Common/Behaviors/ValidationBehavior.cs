@@ -12,7 +12,7 @@ namespace Application.Common.Behaviors;
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
+    private readonly IEnumerable<IValidator<TRequest>> validators;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationBehavior{TRequest, TResponse}"/> class.
@@ -20,7 +20,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
     /// <param name="validators">The validators registered for <typeparamref name="TRequest"/>.</param>
     public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        _validators = validators;
+        this.validators = validators;
     }
 
     /// <inheritdoc />
@@ -30,7 +30,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (!_validators.Any())
+        if (!validators.Any())
         {
             return await next(cancellationToken).ConfigureAwait(false);
         }
@@ -38,7 +38,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         var context = new ValidationContext<TRequest>(request);
 
         var validationResults = await Task.WhenAll(
-            _validators.Select(validator => validator.ValidateAsync(context, cancellationToken)))
+            validators.Select(validator => validator.ValidateAsync(context, cancellationToken)))
             .ConfigureAwait(false);
 
         var failures = validationResults

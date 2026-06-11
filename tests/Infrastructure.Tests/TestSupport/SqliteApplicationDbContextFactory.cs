@@ -13,7 +13,7 @@ namespace Infrastructure.Tests.TestSupport;
 /// </summary>
 public sealed class SqliteApplicationDbContextFactory : IDisposable
 {
-    private readonly SqliteConnection _connection;
+    private readonly SqliteConnection connection;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SqliteApplicationDbContextFactory"/> class,
@@ -21,8 +21,8 @@ public sealed class SqliteApplicationDbContextFactory : IDisposable
     /// </summary>
     public SqliteApplicationDbContextFactory()
     {
-        _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
+        connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
 
         using var context = CreateContext();
         context.Database.EnsureCreated();
@@ -37,12 +37,12 @@ public sealed class SqliteApplicationDbContextFactory : IDisposable
     public ApplicationDbContext CreateContext(IEventStore? eventStore = null, IPublisher? publisher = null)
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlite(_connection)
+            .UseSqlite(connection)
             .Options;
 
         return new ApplicationDbContext(options, eventStore ?? Mock.Of<IEventStore>(), publisher ?? Mock.Of<IPublisher>());
     }
 
     /// <inheritdoc />
-    public void Dispose() => _connection.Dispose();
+    public void Dispose() => connection.Dispose();
 }

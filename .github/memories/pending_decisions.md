@@ -1,37 +1,33 @@
 # Pending Decisions
 
 ## Summary
-Two pending items below; otherwise all major architectural decisions have been confirmed.
+Pending items below; otherwise all major architectural decisions have been confirmed.
 
 ---
 
-## Open: `.editorconfig` Private-Field Naming Rule vs. `_camelCase` Convention
+## Open: IDE0290 "Use primary constructor" suggestion across behavior/service classes
 
-**Raised**: June 10, 2026 (IDE diagnostics on `UnitOfWorkBehavior.cs`)
+**Raised**: June 10, 2026 (IDE diagnostics on `UnitOfWorkBehavior.cs`, suggestion severity)
 
-The IDE reports "Naming rule violation: Prefix '_' is not expected" (IDE1006, suggestion
-severity) for private fields like `_unitOfWork`. `.editorconfig`'s
-`private_or_internal_field_should_be_camel_case` style has `required_prefix = ` (empty), i.e.
-it expects bare `camelCase` private fields — matching the literal wording in
-`user_preference.md`'s "Naming Conventions: ... camelCase for private/local variables", but
-**every** existing private field across `src/Domain`, `src/Application`, and
-`src/Infrastructure` (this session's new code included) uses the `_camelCase` convention,
-which is idiomatic and far more common in modern C#.
+The IDE suggests IDE0290 "Use primary constructor" for most behavior/service classes that
+have a single-purpose constructor (e.g. `UnitOfWorkBehavior`, `ValidationBehavior`,
+`LoggingBehavior`, `MartenEventStore`, `ApplicationDbContext`, `OrderRepository`). This is a
+suggestion-severity, non-blocking diagnostic. Whether to adopt primary constructors
+repo-wide (and how that interacts with XML doc comments on constructor parameters) is a
+separate, unresolved style decision — not addressed in this session.
 
-Two related suggestion-severity (non-blocking) diagnostics on the same files:
-- IDE0290 "Use primary constructor" — would apply to most behavior/service classes with a
-  single-purpose constructor.
-- CA1062 "Validate parameter is non-null" on `Handle(..., RequestHandlerDelegate<TResponse>
-  next, ...)` — MediatR guarantees `next` is non-null, so adding a defensive check would
-  contradict the "don't validate what can't happen" principle.
+---
 
-**Not changed** in this session: renaming ~30+ existing `_field`s repo-wide (or relaxing
-`.editorconfig` to `required_prefix = _`) is a sizeable, codebase-wide decision that should be
-made deliberately rather than fixed ad hoc in one file. Recommendation: update
-`.editorconfig`'s `private_or_internal_field_should_be_camel_case` style to
-`required_prefix = _` (matching actual usage) and correct the wording in
-`user_preference.md` to "`_camelCase` for private fields, `camelCase` for local variables/
-parameters" — this aligns config + docs with existing code rather than the reverse.
+## Open: CA1062 "Validate parameter is non-null" on pipeline behavior `next` delegate
+
+**Raised**: June 10, 2026 (IDE diagnostics on `UnitOfWorkBehavior.cs`, suggestion severity)
+
+CA1062 suggests validating that `next` (the `RequestHandlerDelegate<TResponse>` parameter of
+`Handle(..., RequestHandlerDelegate<TResponse> next, ...)`) is non-null before use, in
+`UnitOfWorkBehavior`, `ValidationBehavior`, and `LoggingBehavior`. MediatR guarantees `next`
+is non-null, so adding a defensive null-check would contradict the "don't validate what can't
+happen" principle. This is a separate, unresolved decision on whether/how to suppress this
+diagnostic for these pipeline behaviors — not addressed in this session.
 
 ---
 
@@ -49,6 +45,34 @@ expected to be addressed when `src/API` endpoints and CQRS handlers are added.
 ---
 
 ## History: Resolved Decisions
+
+### `.editorconfig` Private-Field Naming Rule vs. `_camelCase` Convention (RESOLVED - June 11, 2026)
+**Decision**: Enforce bare `camelCase` for private fields, matching the existing
+`.editorconfig` rule (`private_or_internal_field_should_be_camel_case` -> `camel_case` style
+with empty `required_prefix`) and the existing wording in `user_preference.md` ("camelCase
+for private/local variables"). No changes were made to `.editorconfig` or
+`user_preference.md` — they were already correct.
+
+Code was updated instead: renamed the non-conforming `_camelCase` private fields to
+`camelCase` in `UnitOfWorkBehavior.cs` (`_unitOfWork` -> `unitOfWork`),
+`ValidationBehavior.cs` (`_validators` -> `validators`), `LoggingBehavior.cs` (`_logger` ->
+`logger`), `AggregateRoot.cs` (`_domainEvents` -> `domainEvents`), `Order.cs` (`_items` ->
+`items`), `MartenEventStore.cs` (`_session` -> `session`, `_logger` -> `logger`),
+`ApplicationDbContext.cs` (`_eventStore` -> `eventStore`, `_publisher` -> `publisher`),
+`OrderRepository.cs` (`_dbContext` -> `dbContext`), and
+`SqliteApplicationDbContextFactory.cs` (`_connection` -> `connection`). Also updated
+`OrderConfiguration.cs`'s `SetField("_items")` -> `SetField("items")` to match the
+`Order.Items` backing-field rename (required follow-on, otherwise EF Core model building
+fails). Where the renamed field collided with an identically-named constructor parameter, the
+constructor assignment was qualified as `this.fieldName = fieldName;` to disambiguate (does
+not conflict with `dotnet_style_qualification_for_field = false`, which only flags redundant
+`this.`). Verified with `dotnet build` (0 warnings/errors, IDE1006 diagnostics gone) and
+`dotnet test` (41/41 passing).
+
+The two related suggestion-severity diagnostics (IDE0290 "Use primary constructor" and CA1062
+"Validate parameter is non-null on `next`") raised in the same original entry remain open and
+unresolved — see the "IDE0290 'Use primary constructor'" and "CA1062 'Validate parameter is
+non-null'" entries above; they are independent of this naming decision.
 
 ### Event Sourcing Strategy (RESOLVED - May 15, 2026)
 **Decision**: Use **Marten** with PostgreSQL for event sourcing with Docker Compose for local development.

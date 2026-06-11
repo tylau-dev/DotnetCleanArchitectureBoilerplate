@@ -13,8 +13,8 @@ namespace Infrastructure.Persistence;
 /// </summary>
 public sealed class ApplicationDbContext : DbContext, IUnitOfWork
 {
-    private readonly IEventStore _eventStore;
-    private readonly IPublisher _publisher;
+    private readonly IEventStore eventStore;
+    private readonly IPublisher publisher;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApplicationDbContext"/> class.
@@ -25,8 +25,8 @@ public sealed class ApplicationDbContext : DbContext, IUnitOfWork
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IEventStore eventStore, IPublisher publisher)
         : base(options)
     {
-        _eventStore = eventStore;
-        _publisher = publisher;
+        this.eventStore = eventStore;
+        this.publisher = publisher;
     }
 
     /// <summary>
@@ -64,8 +64,8 @@ public sealed class ApplicationDbContext : DbContext, IUnitOfWork
 
         foreach (var domainEvent in domainEvents)
         {
-            await _eventStore.AppendAsync(domainEvent, cancellationToken).ConfigureAwait(false);
-            await _publisher.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
+            await eventStore.AppendAsync(domainEvent, cancellationToken).ConfigureAwait(false);
+            await publisher.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
         }
 
         return result;
