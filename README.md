@@ -146,8 +146,6 @@ docker-compose down
 
 For more detailed information, see:
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed architecture decisions and patterns
-- [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines and development workflow
 - [.github/project.md](.github/project.md) - Project context and technical decisions
 - [.github/user_preference.md](.github/user_preference.md) - Development standards and code conventions
 
