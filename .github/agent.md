@@ -22,8 +22,10 @@ The agent operates within the `.NET Clean Code Boilerplate` workspace located at
   - `agent.md` - This file (agent identity and responsibilities)
   - `project.md` - Project-specific information and decisions
   - `user_preference.md` - Development practices and conventions
-  - `memories/` - Agent work log (see Memory System below)
-  - `prompts/` - Reusable AI prompts for code reviews, feature implementation, etc.
+  - `memories/` - Agent memory: hot tier (`current_state.md`, `pending_decisions.md`,
+    `architectural_decisions.md`) + cold tier (`memories/adr/`, `pending_decisions_archive.md`,
+    `work_log_*.md`) — see Memory System below
+  - `prompts/` - Reusable AI prompts, including `plan-task.prompt.md` (session kickoff)
 - Source code layers (when created):
   - `src/Domain/` - Domain layer (DDD entities, aggregates, value objects)
   - `src/Application/` - Application layer (CQRS handlers, DTOs, services)
@@ -33,22 +35,35 @@ The agent operates within the `.NET Clean Code Boilerplate` workspace located at
   - `tests/Application.Tests/` - Application layer integration tests
 
 ## Memory System
-The agent maintains a detailed work log in `.github/memories/` to ensure continuity across sessions:
+Memory in `.github/memories/` is split into a small **hot tier** (read every session) and a
+**cold tier** (read on demand, scoped to the current task). This keeps per-session context cost
+roughly constant as the project grows, instead of growing every session. Use
+`.github/prompts/plan-task.prompt.md` to drive this protocol when planning a new task.
 
-### Memory Files
-- `work_log.md` - Chronological record of all work performed
-- `architectural_decisions.md` - Record of major architectural choices and rationale
-- `current_state.md` - Current project state and completed tasks
-- `pending_decisions.md` - Outstanding decisions awaiting user input
+### Hot Tier (read every session)
+- `current_state.md` - Current project state ONLY: last session's outcome + "Next Up". Kept
+  under ~50 lines. **Overwritten** each session, never appended to.
+- `pending_decisions.md` - Open decisions only.
+- `architectural_decisions.md` - One-line-per-ADR index table with links into `adr/`.
+
+### Cold Tier (read only when relevant to the current task)
+- `adr/ADR-NNN-*.md` - Full text of each architectural decision, one file per ADR. Open only
+  the ADR(s) whose "Areas touched" overlap the current task.
+- `pending_decisions_archive.md` - Resolved decisions, kept for historical rationale.
+- `work_log_[DATE]_[branch].md` - Detailed per-session history (the durable record of "what
+  happened"; not needed to know "what is true now").
+- `work_log.md` - Index of work log files.
 
 ### Memory Protocol
-1. **Before starting work**: Read existing memory files to understand context
-2. **During work**: Document significant decisions and implementation details
-3. **After completing work**: Update all relevant memory files with:
-   - What was accomplished
-   - Key architectural decisions
-   - Any blockers or issues encountered
-   - Next steps
+1. **Before starting work**: Read the Hot Tier (3 short files). Read Cold Tier files only if
+   the task description or `current_state.md`/`architectural_decisions.md` points to them.
+2. **During work**: Capture significant decisions as new ADRs (cold tier) and narrative detail
+   in the session's `work_log_*.md` (cold tier) — keep the hot tier free of narrative.
+3. **After completing work**:
+   - **Overwrite** `current_state.md` (don't append) with the new state.
+   - Add new ADRs as separate `adr/ADR-NNN-*.md` files plus one new index row.
+   - Move resolved `pending_decisions.md` entries to `pending_decisions_archive.md`.
+   - Create/update the session's `work_log_*.md`.
 
 ## Technology Stack (Decisions)
 - **.NET Version**: .NET 10
