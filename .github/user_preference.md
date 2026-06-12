@@ -209,12 +209,37 @@ _logger.LogError("3401", "Repository query failed: {Exception}", ex);
 
 ## Memory File Management
 
+Memory files in `.github/memories/` are split into a **hot tier** (read every session:
+`current_state.md`, `pending_decisions.md`, `architectural_decisions.md` index) and a **cold
+tier** (read on demand: `adr/ADR-NNN-*.md`, `pending_decisions_archive.md`, `work_log_*.md`).
+See `agent.md` "Memory System" for the full protocol and `prompts/plan-task.prompt.md` for the
+session-kickoff workflow that applies it.
+
+### `current_state.md`
+- Reflects ONLY the current state — **overwritten** each session, never appended to.
+- Keep under ~50 lines: branch, last session's completed work, a short project-structure
+  snippet, "Next Up", "Ready to Proceed".
+- Full session-by-session history lives in `work_log_*.md`, not in `current_state.md`.
+
+### Architectural Decisions
+- `architectural_decisions.md` is an index table only (ADR number, title, one-line summary,
+  areas touched, link).
+- Each ADR's full text lives in its own `.github/memories/adr/ADR-NNN-short-slug.md` file.
+- When adding a new ADR: create the file under `adr/`, then add one row to the index table.
+
+### Pending Decisions
+- `pending_decisions.md` holds open items only.
+- When a decision is resolved, move its entry to `pending_decisions_archive.md` (relocate the
+  history rather than deleting it).
+
 ### Work Log Strategy
 - A new `work_log_[DATE]_[BRANCH].md` file is created for each work session
   - Format: `work_log_YYYY-MM-DD_branch-name.md`
   - Example: `work_log_2026-05-15_feature-prompt-initiation.md`
 - If work continues on the same date/branch, update the existing session file
-- Session files are kept in `.github/memories/` for historical reference
+- Session files are kept in `.github/memories/` for historical reference; they are part of the
+  cold tier and are not read by default — consult them only for session-level implementation
+  detail not already captured in an ADR.
 
 ### File Structure
 Each work session file includes:
@@ -252,9 +277,11 @@ Each work session file includes:
 - **Inline Comments**: Explain "why" not "what"; complex logic only
 
 ### Memory Files
-- `.github/memories/work_log.md`: Chronological work log
-- `.github/memories/architectural_decisions.md`: ADRs (Architecture Decision Records)
-- `.github/memories/pending_decisions.md`: Outstanding decisions and blockers
+- `.github/memories/current_state.md`: Current project state (hot tier, overwritten each session)
+- `.github/memories/architectural_decisions.md`: ADR index (hot tier); full ADRs in `adr/`
+- `.github/memories/pending_decisions.md`: Open decisions (hot tier); resolved items in
+  `pending_decisions_archive.md`
+- `.github/memories/work_log.md`: Index of work log files (cold tier)
 
 ## Validation & Quality Gates
 
@@ -304,5 +331,5 @@ Before marking work as complete:
 - [ ] XML comments added to public contracts (if applicable)
 - [ ] No hardcoded secrets or sensitive data
 - [ ] Architecture layers respected
-- [ ] Memory files updated (work_log.md, current_state.md)
+- [ ] Memory files updated (`current_state.md` overwritten, new ADRs/`work_log_*.md` added if applicable)
 - [ ] Documentation reflects changes
